@@ -13,3 +13,5 @@ To keep the implementations relatively simple, a simplified set of Blackjack rul
 - Betting occurs only at the beginning of the game (no insurance, splits, doubling down, etc.).
 - The player starts with $100 and can bet any amount between $1 and their current balance.
 - Once the player runs out of money, the game ends.
+
+See the "About" comments in the [src/main/java/blackjack/Main](src/main/java/blackjack) classes for more details on each implementation.
