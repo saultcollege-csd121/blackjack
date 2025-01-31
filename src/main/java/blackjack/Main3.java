@@ -69,7 +69,7 @@ public class Main3 {
                     }
                 }
 
-                case ExitGame _phase -> {
+                case ExitGame _ -> {
                     println("Thanks for playing!");
                     return;
                 }
