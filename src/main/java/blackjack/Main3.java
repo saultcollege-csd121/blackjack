@@ -7,7 +7,6 @@ import static blackjack.ui.Console.*;
 
 /****************************************************************
  * ABOUT MAIN3
- *
  * In this version of the game, we model ALL the game logic (both
  * the game state and the game rules) in a set of related records.
  * (See the game.main3 package for the records.)
@@ -16,7 +15,6 @@ import static blackjack.ui.Console.*;
  * Some records represent states where the player has won or lost.
  * Others represent states where the game is still in progress, and
  * provide methods for transitioning to the next state.
- *
  * Modelling things in this way allows our main method to be a very
  * simple loop that simply transitions between game states.
  */
@@ -36,8 +34,6 @@ public class Main3 {
                 The minimum bet is 1 chip.""");
 
         while ( true ) {
-
-            var gameOver = false;
 
             showChipCount(chips);
 

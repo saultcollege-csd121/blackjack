@@ -11,7 +11,6 @@ import static blackjack.ui.Console.*;
 
 /****************************************************************
  * ABOUT MAIN1
- *
  * This is the first version of the main class that we made in class
  * It's a good start. We have tried to separate our game data and
  * operations (in the game package) from the presentation of that data

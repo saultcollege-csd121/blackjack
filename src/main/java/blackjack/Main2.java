@@ -1,24 +1,16 @@
 package blackjack;
 
-import blackjack.game.CardStack;
-import blackjack.game.PointCounter;
 import blackjack.game.main2.BlackjackGame;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static blackjack.ui.Console.*;
 
 /****************************************************************
  * ABOUT MAIN2
- *
  * As an improvement on Main1, here we have extracted some of
  * the game logic into a separate class, Game.
  * We create a game object which stores the current state of the
  * game and provides methods to interact with the game.
- *
  * We use those methods here in the main method to play the game.
- *
  * This still leaves some of the logic regarding the game flow
  * in the main method (in the form of the sequence of conditionals
  * and loops that move the game through its phases).
