@@ -6,15 +6,21 @@ import static blackjack.ui.Console.*;
 
 /****************************************************************
  * ABOUT MAIN2
- * As an improvement on Main1, here we have extracted some of
+ * As an improvement on Main1, here we have extracted much of
  * the game logic into a separate class, Game.
  * We create a game object which stores the current state of the
- * game and provides methods to interact with the game.
+ * game and provides methods to interact with and update the game.
  * We use those methods here in the main method to play the game.
- * This still leaves some of the logic regarding the game flow
- * in the main method (in the form of the sequence of conditionals
- * and loops that move the game through its phases).
- * We will tackle that in Main3.
+ * There is still a bit of room for improvement, though:
+ * Our main method still needs to 'know' how a Blackjack game
+ * progresses through its phases. (This is modelled by the sequence
+ * of conditionals and loops in the main method that call the
+ * appropriate methods on the game object; if we are not careful
+ * about the order of these calls, we could end up in an invalid
+ * game state, e.g. settling the chips before the dealer has played.)
+ * We will tackle this final improvement in Main3 by modelling the
+ * flow of the game as a 'state machine' using a set of classes that
+ * represent the different states of the game.
  */
 
 public class Main2 {
@@ -23,7 +29,7 @@ public class Main2 {
 
         println("Welcome to Blackjack!");
 
-        int chips = 100;
+        var game = new BlackjackGame(100);
 
         println("""
                 Your goal is to get closest to 21 without going over.
@@ -33,22 +39,26 @@ public class Main2 {
 
         gameLoop: while ( true ) {
 
-            showChipCount(chips);
+            showChipCount(game.getPlayerChips());
+
+            if ( game.getPlayerChips() == 0) {
+                println("You're out of chips! Goodbye!");
+                System.exit(0);
+            }
 
             // Ask the user if they want to play a round
             var response = promptForOption("Would you like to play a round? ", "y", "n");
 
             if ( response.equals("y") ) {
 
-                var betAmount = promptForInt("How much do you want to bet? ", 1, chips);
+                var betAmount = promptForInt("How much do you want to bet? ", 1, game.getPlayerChips());
 
-                var game = new BlackjackGame();
-
+                game.newRound(betAmount);
 
                 if ( game.playerHasBlackjack() ) {
                     showHand("Your hand", game.getPlayerHand());
                     println("Blackjack! You win!");
-                    chips += betAmount * 3 / 2;
+                    game.settleChips();
                     continue;
                 }
 
@@ -56,7 +66,7 @@ public class Main2 {
                     showHand("Your hand", game.getPlayerHand());
                     showHand("Dealer's hand", game.getDealerHand());
                     println("Dealer has Blackjack! You lose!");
-                    chips -= betAmount;
+                    game.settleChips();
                     continue;
                 }
 
@@ -70,12 +80,12 @@ public class Main2 {
                         if ( game.playerIsBust() ) {
                             showHand("Your hand", game.getPlayerHand(), true);
                             println("Bust! You lose!");
-                            chips -= betAmount;
+                            game.settleChips();
                             continue gameLoop;
                         } else if ( game.playerHasBlackjack() ) {
                             showHand("Your hand", game.getPlayerHand());
                             println("21! You win!");
-                            chips += betAmount;
+                            game.settleChips();
                             continue gameLoop;
                         }
                     } else {
@@ -89,16 +99,15 @@ public class Main2 {
                 showHand("Your hand", game.getPlayerHand(), true);
                 if ( game.dealerIsBust() ) {
                     println("Dealer busts! You win!");
-                    chips += betAmount;
                 } else if ( game.dealerWins() ) {
                     println("Dealer wins!");
-                    chips -= betAmount;
                 } else if ( game.playerWins() ) {
                     println("You win!");
-                    chips += betAmount;
                 } else {
                     println("Push!");
                 }
+
+                game.settleChips();
 
             } else {
                 println("Goodbye!");
