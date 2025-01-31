@@ -41,6 +41,11 @@ public class Main1 {
 
             showChipCount(chips);
 
+            if ( chips == 0 ) {
+                println("You're out of chips! Goodbye!");
+                System.exit(0);
+            }
+
             // Ask the user if they want to play a round
             var response = promptForOption("Would you like to play a round? ", "y", "n");
 
