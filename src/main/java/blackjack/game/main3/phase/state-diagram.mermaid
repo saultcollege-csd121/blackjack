@@ -1,0 +1,34 @@
+%% This diagram documents the set of states that are being modeled
+%% in this version of the app, along with the conditions / actions
+%% that occur when transitions from one state to another occur.
+
+%% This is a 'mermaid' file.  Mermaid is a diagramming language.
+%% You can see a graphical version of this diagram by pasting
+%% This code into the live editor here: https://mermaid.live/
+
+stateDiagram-v2
+    [*] --> Betting : Player wants to play
+    [*] --> ExitGame : Player done
+    [*] --> ExitGame : Player out of money
+
+    Betting --> Dealing : Player places bet
+
+    Dealing --> PlayerBlackjack : Player has 21
+    Dealing --> DealerBlackjack : Dealer has 21
+    Dealing --> PlayerTurn : Neither Player nor Dealer has 21
+
+    PlayerBlackjack --> [*] : Chip count += bet * 3/2
+    DealerBlackjack --> [*] : Chip count -= bet
+
+    PlayerTurn --> PlayerBust : Hit and > 21
+    PlayerTurn --> DealerTurn : Stand
+    PlayerTurn --> PlayerTurn : Hit and < 21
+
+    DealerTurn --> DealerWin : dealerPoints > playerPoints and dealerPoints < 21
+    DealerTurn --> PlayerWin : dealerPoints < playerPoints or dealerPoints > 21
+    DealerTurn --> Push : dealerPoints == playerPoints
+
+    DealerWin --> [*] : Chip count -= bet
+    PlayerWin --> [*] : Chip count += bet
+    Push --> [*] : Display message
+    PlayerBust --> [*] : Chip count -= bet

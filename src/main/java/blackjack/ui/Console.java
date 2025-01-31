@@ -34,7 +34,7 @@ public class Console {
         while (true) {
             String response = prompt(prompt + "(" + String.join("/", options) + "): ");
             for (String option : options) {
-                if (response.equalsIgnoreCase(option)) {
+                if (response.equals(option)) {
                     return option;
                 }
             }
